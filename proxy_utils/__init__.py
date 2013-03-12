@@ -39,14 +39,23 @@ def _validation_single_target(url, proxies):
         workers.append(vd)
     for each in workers:
         each.join()
-    #_logger.debug("begin store proxy, url:%s" % (url))
-    store_ranked_proxy(USEFUL_PROXY_DICT, url) 
+        
 
 def validate_proxies():
     all_prxies = ALL_PROXIES_DICT.keys()
-    for url in TARGET_URLS:
-        _validation_single_target(url, all_prxies)
-
+    for region in TARGET_URLS:
+        sets = []
+        for url in TARGET_URLS[region]:
+            _validation_single_target(url, all_prxies)
+            theproxies = []
+            for key in sorted(USEFUL_PROXY_DICT[url]):
+                theproxies.extend(USEFUL_PROXY_DICT[url][key])
+                if VALID_PROXY_NUM and len(theproxies) > VALID_PROXY_NUM:
+                    break
+            
+            sets.append( set(theproxies) )
+        proxies = set.intersection( *sets )
+        store_ranked_proxy(proxies, region)
 
 #从指定网站上获取最新的代理IP
 def get_lastest_proxies():

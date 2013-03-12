@@ -57,7 +57,8 @@ COUNTRY_PAGES = [(x, y) for x in COUNTRIES for y in PAGES]
         ]
     },
     
-    
+'''
+DYNAMIC_PROXY_SOURCES = [
     {
         'www.proxycn.cn': [
              r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
@@ -99,9 +100,6 @@ sort=reliability&desc=true&pnum=%d#table' %
             'http://proxy.berry0123.cn/index.php'
         ]
     },
-'''
-DYNAMIC_PROXY_SOURCES = [
-
     {
         'www.sooip.cn': [
             r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} \d+",
@@ -116,18 +114,26 @@ SOURCE_LIST = [DYNAMIC_PROXY_SOURCES, STATIC_PROXY_SOURCES]
 
 
 #验证代理是否有效所访问的URL
-TARGET_URLS = [
+TARGET_URLS = {
 #    'http://itunes.apple.com/cn/genre/ios/id36?mt=8',
-    'http://www.amazon.com',
-    'http://www.google.com',
-    'http://www.bing.com'
-]
+'foreign' : [
+             'http://www.amazon.com',
+             'http://www.google.com'
+             ],
+               
+'domestic' : [
+              'http://www.baidu.com',
+              'http://www.sina.com.cn'
+              ]
+}
 
 CONTENT_CHECK = {
 #    'http://itunes.apple.com/cn/genre/ios/id36?mt=8' : 'get iTunes now',
     'http://www.amazon.com' : '1996-2013, Amazon.com, Inc. or its affiliates',
     'http://www.google.com' : 'About Google',
-    'http://www.bing.com' : '2013 Microsoft'
+    'http://www.bing.com' : '2013 Microsoft',
+    'http://www.baidu.com' : '030173',
+    'http://www.sina.com.cn' : '110000000016',
 }
 
 #超时时间
@@ -140,9 +146,7 @@ FETCH_THREAD_NUM = 10
 VALID_THREAD_NUM = 100
 
 #每次验证代理的个数,None表示全部代理个数
-VALID_PROXY_NUM = None
-
-VALID_TIMES_EACH = 2
+VALID_PROXY_NUM = 200
 
 #每次获取代理时的URL个数，None表示全部URL
 URL_NUM = None

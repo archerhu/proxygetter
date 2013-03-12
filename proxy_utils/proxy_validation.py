@@ -21,21 +21,18 @@ _logger = logging.getLogger('proxy_util.proxy_validation')
 
 USEFUL_PROXY_DICT = {}
 
-def store_ranked_proxy(proxies_dict, url):
-    store_proxies = []
-    max_time = 0
-        
-    for key in sorted(proxies_dict):
-        if key > max_time:
-            max_time = key
-        proxies = proxies_dict[key]
-        store_proxies.extend(proxies)
-        
-    _logger.info("get and validated proxy[size:%d][max_use_time:%s]", len(store_proxies), str(max_time))
+def store_ranked_proxy(proxies, origin):
     
-    with open("proxy.list", "w") as f:
-        for p in store_proxies:
-            f.write("%s\n" %p)
+    if len(proxies) == 0:
+        _logger.info("get and validated proxy[size:%d][origin:%s]", len(proxies), origin )
+    else: 
+        filename = "proxy-" + origin + ".list"
+        with open(filename, "w") as f:
+            for p in proxies:
+                f.write("%s\n" %p)
+                
+        _logger.info("get and validated proxy[size:%d][origin:%s][filename:%s]", len(proxies), origin, filename)
+
 
 class ProxyValidation(threading.Thread):
     '''
@@ -48,9 +45,11 @@ class ProxyValidation(threading.Thread):
         self.timeout = time_out
         self.tid = tid
         self.keyword = keyword
+        USEFUL_PROXY_DICT[url] = dict()
 
     def validate(self, url, proxy, t_out, keyword):
         try:
+            
             
             begin = time.time()
             #用代理打开链接
@@ -129,8 +128,8 @@ class ProxyValidation(threading.Thread):
                 continue 
         for proxy in available_proxies:
             for timestamp, ip in proxy.items():
-                if ip not in USEFUL_PROXY_DICT.get(timestamp, []):
-                    USEFUL_PROXY_DICT.setdefault(
+                if ip not in USEFUL_PROXY_DICT[self.url].get(timestamp, []):
+                    USEFUL_PROXY_DICT[self.url].setdefault(
                         timestamp,
                         []
                     ).append(ip)

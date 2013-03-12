@@ -1,12 +1,15 @@
 proxygetter
 ===========
 
+
 Dependencies
 ------------
 
-python >= 2.6
-python lib: requests, lxml
-redis 
+ python >= 2.6
+ 
+ python lib: requests, lxml
+ 
+ redis 
 
 
 How It Run
