@@ -1,0 +1,7 @@
+*~
+*.pyc
+.settings
+.project
+.pydevproject
+proxy.list
+venv
