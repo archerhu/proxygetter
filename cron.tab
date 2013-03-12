@@ -1,0 +1,1 @@
+0 0,12 * * *     cd /home/work/proxygetter/ && python /home/work/proxygetter/proxygetter.py >> /home/work/proxygetter/log/proxygetter.log
