@@ -21,8 +21,7 @@ _logger = logging.getLogger('proxy_util.proxy_validation')
 
 USEFUL_PROXY_DICT = {}
 
-def store_ranked_proxy(proxies, origin):
-    
+def store_proxy(proxies, origin):
     if len(proxies) == 0:
         _logger.info("get and validated proxy[size:%d][origin:%s]", len(proxies), origin )
     else: 

@@ -4,9 +4,10 @@ import random
 import sys
 
 from .proxy_getter import ProxyGetter, get_urls, ALL_PROXIES_DICT
-from .proxy_validation import ProxyValidation,store_ranked_proxy, USEFUL_PROXY_DICT
+from .proxy_validation import ProxyValidation,store_proxy, USEFUL_PROXY_DICT
 from .proxy_getter_config import SOURCE_LIST, TARGET_URLS, VALIDATE_TIME_OUT, VALID_THREAD_NUM, VALID_PROXY_NUM, URL_NUM, FETCH_THREAD_NUM, CONTENT_CHECK
 
+import urlparse
 import logging
 _logger = logging.getLogger('proxy_util')
 
@@ -15,6 +16,7 @@ def _fetch_mutlithread(sources):
     urls = get_urls(sources)[:URL_NUM]
     workers = []
     for i in xrange(FETCH_THREAD_NUM):
+        _logger.debug("fetch url[thread:%d][url-length:%d][FETCH_THREAD_NUM:%d]", i, len(urls), FETCH_THREAD_NUM)
         pg = ProxyGetter(urls[i:len(urls):FETCH_THREAD_NUM], i, sources) 
         pg.setDaemon(True)
         pg.start()
@@ -52,10 +54,12 @@ def validate_proxies():
                 theproxies.extend(USEFUL_PROXY_DICT[url][key])
                 if VALID_PROXY_NUM and len(theproxies) > VALID_PROXY_NUM:
                     break
-            
+            #_logger.info("validate passed %d proxies[url:%s]", len(theproxies), url)
+            _o = urlparse.urlparse(url)
+            store_proxy(theproxies, _o.netloc)
             sets.append( set(theproxies) )
         proxies = set.intersection( *sets )
-        store_ranked_proxy(proxies, region)
+        store_proxy(proxies, region)
 
 #从指定网站上获取最新的代理IP
 def get_lastest_proxies():
