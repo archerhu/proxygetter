@@ -15,7 +15,7 @@ r = redis.StrictRedis(host='localhost', port=6379, db=1)
 def get_one_proxy_from_redis(origin):
     p_len = r.llen(origin)
     if p_len < 1:
-        _logger.warn('proxy is null for origin:%s' % (origin))
+        print('proxy is null for origin:%s' % (origin))
         return
     i = random.randrange(0, p_len)
     return r.lindex(origin, i).strip()
@@ -32,8 +32,9 @@ def get_proxies_from_file(origin):
         _logger.warn("load2redis error, file not exists[filename:%s]", filename)
     return proxies
 
+from proxy_utils.proxy_getter_config import TARGET_URLS
 def load2redis():
-    for origin in ['foreign', 'domestic']:
+    for origin in TARGET_URLS:
         proxies = get_proxies_from_file(origin)
         pip = r.pipeline()
         tmp_key = '__' + origin

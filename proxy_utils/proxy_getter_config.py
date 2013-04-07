@@ -124,7 +124,10 @@ TARGET_URLS = {
 'domestic' : [
               'http://www.baidu.com',
               'http://www.sina.com.cn'
-              ]
+              ],
+'drvita' : [
+            'http://www.drvita.com'
+            ]
 }
 
 CONTENT_CHECK = {
@@ -134,6 +137,7 @@ CONTENT_CHECK = {
     'http://www.bing.com' : '2013 Microsoft',
     'http://www.baidu.com' : '030173',
     'http://www.sina.com.cn' : '110000000016',
+    'http://www.drvita.com' : 'Visit DrVita, your premier online store',
 }
 
 #超时时间

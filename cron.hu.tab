@@ -1,0 +1,1 @@
+0 6 * * *     source /Users/shichaohu/work/proxygetter/venv/bin/activate && cd /Users/shichaohu/work/proxygetter/ && python /Users/shichaohu/work/proxygetter/proxygetter.py >> /Users/shichaohu/work/proxygetter/log/proxygetter.log
