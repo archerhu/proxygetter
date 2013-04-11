@@ -125,9 +125,6 @@ TARGET_URLS = {
               'http://www.baidu.com',
               'http://www.sina.com.cn'
               ],
-'drvita' : [
-            'http://www.drvita.com'
-            ]
 }
 
 CONTENT_CHECK = {
