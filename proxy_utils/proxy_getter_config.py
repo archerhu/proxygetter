@@ -129,7 +129,8 @@ TARGET_URLS = {
 
 CONTENT_CHECK = {
 #    'http://itunes.apple.com/cn/genre/ios/id36?mt=8' : 'get iTunes now',
-    'http://www.amazon.com' : '1996-2013, Amazon.com, Inc. or its affiliates',
+    #'http://www.amazon.com' : '1996-2013, Amazon.com, Inc. or its affiliates',
+    'http://www.amazon.com/gp/offer-listing/B001DJDN3I/?condition=new' : 'B001DJDN3I',
     'http://www.google.com/intl/en/about/' : 'About Google',
     'http://www.bing.com' : '2013 Microsoft',
     'http://www.baidu.com' : '030173',
