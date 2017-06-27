@@ -16,7 +16,7 @@ def _fetch_mutlithread(sources):
     urls = get_urls(sources)[:URL_NUM]
     workers = []
     for i in xrange(FETCH_THREAD_NUM):
-        _logger.debug("fetch url[thread:%d][url-length:%d][FETCH_THREAD_NUM:%d]", i, len(urls), FETCH_THREAD_NUM)
+        _logger.debug("fetch url[thread:%d][url-length:%d][FETCH_THREAD_NUM:%d][sources:%s]", i, len(urls), FETCH_THREAD_NUM, sources)
         pg = ProxyGetter(urls[i:len(urls):FETCH_THREAD_NUM], i, sources) 
         pg.setDaemon(True)
         pg.start()

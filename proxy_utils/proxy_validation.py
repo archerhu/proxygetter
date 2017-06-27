@@ -14,6 +14,8 @@ import json
 import requests
 import lxml
 import os
+import pycurl
+from StringIO import StringIO
 
 import logging
 _logger = logging.getLogger('proxy_util.proxy_validation')
@@ -48,17 +50,21 @@ class ProxyValidation(threading.Thread):
 
     def validate(self, url, proxy, t_out, keyword):
         try:
-            
-            
             begin = time.time()
-            #用代理打开链接
-            headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)',
-                       'Accept-Language' : 'en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4'
-                       }
-            proxies = { "http": proxy }
-            r = requests.get(url, timeout=t_out, proxies=proxies, headers=headers, cookies=dict())
-            #_logger.debug("requests [url:%s][proxy:%s]", url, str(headers) )
-            the_page = r.text
+
+            c = pycurl.Curl()
+            socket = proxy.split(":")
+            c.setopt(pycurl.PROXY, socket[0])
+            c.setopt(pycurl.PROXYPORT, int(socket[1]))
+            c.setopt(pycurl.PROXYUSERPWD,  'xombat:yysowlkl')
+            c.setopt(pycurl.URL, url)
+            buffer = StringIO()
+            c.setopt(c.WRITEDATA, buffer)
+            c.setopt(pycurl.USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)')
+            c.setopt(pycurl.HTTPHEADER, ['Accept-Language: en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4'])
+            c.perform()
+            c.close()
+            the_page = buffer.getvalue()
             
             '''
             httplib.HTTPConnection.debuglevel = 1
@@ -98,10 +104,7 @@ class ProxyValidation(threading.Thread):
             return 
         except requests.Timeout ,e:
             _logger.exception("validate requests.Timeout[errmsg:%s][url:%s][proxy:%s]", str(e), url, proxy)
-            return 
-        except socket.timeout ,e:
-            _logger.exception("validate socket.timeout[errmsg:%s][url:%s][proxy:%s]", str(e), url, proxy)
-            return 
+            return
         except requests.TooManyRedirects ,e:
             _logger.exception("validate TooManyRedirects[errmsg:%s][url:%s][proxy:%s]", str(e), url, proxy)
             return 

@@ -9,8 +9,10 @@ import time
 import logging
 import redis
 import random
+from proxy_utils.proxy_getter_config import TARGET_URLS
 
 r = redis.StrictRedis(host='localhost', port=6379, db=1)
+
 
 def get_one_proxy_from_redis(origin):
     p_len = r.llen(origin)
@@ -32,22 +34,23 @@ def get_proxies_from_file(origin):
         _logger.warn("load2redis error, file not exists[filename:%s]", filename)
     return proxies
 
-from proxy_utils.proxy_getter_config import TARGET_URLS
+
 def load2redis():
     for origin in TARGET_URLS:
         proxies = get_proxies_from_file(origin)
         pip = r.pipeline()
         tmp_key = '__' + origin
         pip.delete(tmp_key)
-        #_logger.debug('get proxy num:%d' % (len(proxies)))
+        _logger.debug('get proxy num:%d' % (len(proxies)))
         for p in proxies:
             pip.rpush(tmp_key, p)
         pip.rename(tmp_key, origin)
-        #_logger.debug("load proxy size: " + str(len(proxies)) + "url:" + url)
+        _logger.debug("load proxy size: " + str(len(proxies)))
         pip.execute()
-        
+
+
 if __name__ =='__main__':
-    #定时任务，获取最新可用代理
+    # 定时任务，获取最新可用代理
     from mylogger import loginit
     loginit("log/proxygetter.log", debug=True)
     _logger = logging.getLogger("main")

@@ -23,16 +23,19 @@ metadata.bind = engine
 
 ALL_PROXIES_DICT = dict()
 
+
 def get_urls(proxy_sources):
     urls = []
     for source in proxy_sources:
         urls.extend(source['urls'])
     return urls
 
+
 def get_patterns(url, proxy_sources):
     for source in proxy_sources:
         if source.get(re.split('/', url)[2]):
             return source[re.split('/', url)[2]]
+
 
 def get_source(url):
     for i in xrange(3):
@@ -44,7 +47,8 @@ def get_source(url):
             sleep(2)
             continue
     return
-           
+
+
 def get_dynamic_urls(url):
     urls = []
     url_parts = url.split('/')
@@ -58,6 +62,7 @@ def get_dynamic_urls(url):
     else:
         return []
 
+
 class ProxyGetter(Thread):
     '''
     本类用于获取代理
@@ -67,6 +72,7 @@ class ProxyGetter(Thread):
         self.urls = urls
         self.tid = tid
         self.proxy_sources = proxy_sources
+        _logger.debug("ProxyGetter init[urls:%s][tid:%d][proxy_sources:%s]", urls, tid, proxy_sources)
 
     def get_release_site_proxy(self, url, patterns):
         try:

@@ -8,7 +8,7 @@
 from proxy_getter import get_dynamic_urls
 #用于获取静态页面中代理的url及匹配模式
 STATIC_PROXY_SOURCES = [
-    { 
+    {
         'blog.sina.com.cn': [
             r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
             r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)",
@@ -17,13 +17,22 @@ STATIC_PROXY_SOURCES = [
             'http://blog.sina.com.cn/s/blog_5519064d0100y8nz.html'
         ]
     },
-    { 
+    {
         'proxy.ipcn.org': [
             r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
             r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)",
         ],
         'urls': [
             'http://proxy.ipcn.org/proxylist.html'
+        ]
+    },
+    {
+        'www.sooip.cn': [
+            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} \d+",
+            r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) (?P<port>\d+)",
+        ],
+        'urls': [
+            'http://www.sooip.cn/zuixindaili/2012-05-15/2807.html'
         ]
     },
     {
@@ -56,86 +65,101 @@ COUNTRY_PAGES = [(x, y) for x in COUNTRIES for y in PAGES]
                 (country, page) for (country, page) in COUNTRY_PAGES
         ]
     },
-    
 '''
-DYNAMIC_PROXY_SOURCES = [
-    {
-        'www.proxycn.cn': [
-             r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
-             r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)",
-        ],
-        'urls': [
-                 'http://www.proxycn.cn/html_proxy/country%s-1.html' %
-                country.upper() for country in COUNTRIES
-        ]
-    },
-    {
-        'www.freeproxy.ch': [
-            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
-            r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)",
 
+DYNAMIC_PROXY_SOURCES = [
+    # {
+    #     'www.proxycn.cn': [
+    #          r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
+    #          r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)",
+    #     ],
+    #     'urls': [
+    #              'http://www.proxycn.cn/html_proxy/country%s-1.html' %
+    #             country.upper() for country in COUNTRIES
+    #     ]
+    # },
+    # {
+    #     'www.freeproxy.ch': [
+    #         r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
+    #         r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)",
+    #
+    #     ],
+    #     'urls': [
+    #         'http://www.freeproxy.ch/country-CN.htm'
+    #     ]
+    # },
+    # {
+    #     'www.xroxy.com': [
+    #         r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\n\n\n\t\d+",
+    #         r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\n\n\n\t(?P<port>\d+)"
+    #     ],
+    #     'urls': [
+    #         'http://www.xroxy.com/proxylist.php?port=&type=All_http&ssl=&country=CN&latency=&reliability=&sort=reliability&desc=true&pnum=%d#table' %
+    #         page for page in xrange(23)
+    #     ]
+    # },
+
+    # {
+    #     'api.xicidaili.com': [
+    #         r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
+    #         r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)"
+    #     ],
+    #     'urls': [
+    #         'http://api.xicidaili.com/free2016.txt'
+    #     ]
+    # },
+    #
+    {
+        'dps.kuaidaili.com': [
+            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+",
+            r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(?P<port>\d+)"
         ],
         'urls': [
-            'http://www.freeproxy.ch/country-CN.htm'
+            'http://dps.kuaidaili.com/api/getdps/?orderid=979827131976140&num=100&ut=1&sep=1'
         ]
-    },
-    {
-        'www.xroxy.com': [
-            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\n\n\n\t\d+",
-            r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\n\n\n\t(?P<port>\d+)"
-        ],
-        'urls': [
-            'http://www.xroxy.com/proxylist.php?port=&type=\
-All_http&ssl=&country=CN&latency=&reliability=&\
-sort=reliability&desc=true&pnum=%d#table' %
-            page for page in xrange(23)
-        ]
-    },
-    {
-        'proxy.berry0123.cn': [
-            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\s\r\n\s{4}\d+",
-            r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s\r\n\s{4}(?P<port>\d+)"
-        ],
-        'urls': [
-            'http://proxy.berry0123.cn/index.php'
-        ]
-    },
-    {
-        'www.sooip.cn': [
-            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} \d+",
-            r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) (?P<port>\d+)",
-        ],
-        'urls': get_dynamic_urls('http://www.sooip.cn/guoneidaili/')
     }
+    # {
+    #     'proxy.berry0123.cn': [
+    #         r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\s\r\n\s{4}\d+",
+    #         r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s\r\n\s{4}(?P<port>\d+)"
+    #     ],
+    #     'urls': [
+    #         'http://proxy.berry0123.cn/index.php'
+    #     ]
+    # },
+    # {
+    #     'www.sooip.cn': [
+    #         r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} \d+",
+    #         r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) (?P<port>\d+)",
+    #     ],
+    #     'urls': get_dynamic_urls('http://www.sooip.cn/guoneidaili/')
+    # }
 ]
 
-SOURCE_LIST = [DYNAMIC_PROXY_SOURCES, STATIC_PROXY_SOURCES]
+SOURCE_LIST = [DYNAMIC_PROXY_SOURCES]
 
 
 
 #验证代理是否有效所访问的URL
 TARGET_URLS = {
-#    'http://itunes.apple.com/cn/genre/ios/id36?mt=8',
-'foreign' : [
-             'http://www.amazon.com',
-             'http://www.google.com/intl/en/about/'
-             ],
-               
-'domestic' : [
-              'http://www.baidu.com',
-              'http://www.sina.com.cn'
-              ],
+    'http': [
+        'http://qimingpian.com/shujin/apply.html',
+        'http://www.itjuzi.com/company'
+    ],
+    'https': [
+        'https://rong.36kr.com/api/p/sm/seo/fragment/header-footer',
+    ]
+    # 'domestic': [
+    #     'http://www.baidu.com',
+    #     'http://www.sina.com.cn'
+    # ],
 }
 
 CONTENT_CHECK = {
-#    'http://itunes.apple.com/cn/genre/ios/id36?mt=8' : 'get iTunes now',
-    #'http://www.amazon.com' : '1996-2013, Amazon.com, Inc. or its affiliates',
-    'http://www.amazon.com/gp/offer-listing/B001DJDN3I/?condition=new' : 'B001DJDN3I',
-    'http://www.google.com/intl/en/about/' : 'About Google',
-    'http://www.bing.com' : '2013 Microsoft',
-    'http://www.baidu.com' : '030173',
-    'http://www.sina.com.cn' : '110000000016',
-    'http://www.drvita.com' : 'Visit DrVita, your premier online store',
+    # 'http://itunes.apple.com/cn/genre/ios/id36?mt=8' : 'get iTunes now',
+    'https://rong.36kr.com/api/p/sm/seo/fragment/header-footer': u'11010802020581',
+    'http://www.itjuzi.com/company': u'14026526',
+    'http://qimingpian.com/shujin/apply.html': u'dz@qimingpian.com'
 }
 
 #超时时间
