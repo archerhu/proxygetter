@@ -57,6 +57,8 @@ class ProxyValidation(threading.Thread):
             c.setopt(pycurl.PROXY, socket[0])
             c.setopt(pycurl.PROXYPORT, int(socket[1]))
             c.setopt(pycurl.PROXYUSERPWD,  'xombat:yysowlkl')
+            c.setopt(pycurl.CONNECTTIMEOUT, t_out)
+            c.setopt(pycurl.TIMEOUT, t_out)
             c.setopt(pycurl.URL, url)
             buffer = StringIO()
             c.setopt(c.WRITEDATA, buffer)
